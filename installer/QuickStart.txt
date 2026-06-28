@@ -1,0 +1,49 @@
+============================================================
+OfficeFileGuard - Quick Start Guide
+============================================================
+
+Thank you for choosing OfficeFileGuard!
+Protecting your sensitive Office documents has never been easier.
+
+WHAT IS OFFICEFILEGUARD?
+OfficeFileGuard is a simple tool designed to prevent you from
+accidentally emailing confidential Word, Excel, or PowerPoint
+files to people outside your company or organization.
+
+HOW TO USE IT:
+
+1. MARK YOUR DOCUMENTS
+   Right-click any Office file (.docx, .xlsx, .pptx) in Windows
+   Explorer and select "Toggle Reserved". A small padlock icon
+   will appear on the file, letting you know it is protected.
+
+   -> Watch the quick video demo at: www.officefileguard.com
+
+2. SEND EMAILS WITH CONFIDENCE
+   If you try to attach a "Reserved" document to an email in
+   Outlook, OfficeFileGuard will automatically check the
+   recipients.
+
+3. SMART ALERTS
+   If you are sending a protected file to an external email
+   address, a warning will pop up. You can then choose to
+   remove the attachment or confirm that you really want to
+   send it.
+
+PRIVACY & SECURITY
+- Your files never leave your computer.
+- OfficeFileGuard does NOT connect to the internet.
+- We do NOT collect any personal data.
+
+SUPPORT THE PROJECT
+OfficeFileGuard is free to use. If this tool saves you from a
+potential data leak, please consider supporting us with a
+small 1 EUR donation at: www.officefileguard.com
+
+SYSTEM REQUIREMENTS
+- Windows 10 or 11
+- Microsoft Office & Outlook
+
+============================================================
+Copyright (c) 2026 OfficeFileGuard. All rights reserved.
+============================================================

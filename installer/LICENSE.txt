@@ -1,0 +1,40 @@
+============================================================
+END USER LICENSE AGREEMENT (EULA) - OfficeFileGuard
+============================================================
+
+1. GRANT OF LICENSE
+OfficeFileGuard ("Software") is provided to you as FREEWARE for
+personal or professional use. You are granted a non-exclusive
+license to use this Software indefinitely without any functional
+restrictions.
+
+2. VOLUNTARY CONTRIBUTION (DONATIONWARE)
+The Software is fully functional. While it contains a discrete
+support link in the alert footer, it does not use "nag screens",
+forced delays, or locked features. If you find this tool
+useful, you are kindly invited to support its development and
+hosting costs with a voluntary contribution of 1 EUR via
+www.officefileguard.com. This contribution is strictly
+optional and does not alter the Software's interface.
+
+3. OWNERSHIP & RESTRICTIONS
+This Software is proprietary and remains the property of the author.
+You may NOT:
+- Decompile, reverse engineer, or disassemble the Software.
+- Modify, rent, lease, or sell the Software as a standalone product.
+- Bundle the Software within commercial packages without
+  explicit written permission.
+
+4. REDISTRIBUTION
+You are encouraged to share OfficeFileGuard! You may freely
+redistribute the Software in its original, unmodified installer
+package, provided that no fee is charged for the Software itself.
+
+5. NO WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+THE AUTHOR SHALL NOT BE LIABLE FOR ANY DATA LOSS, CLAIM, OR
+OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
+
+============================================================
+Copyright (c) 2026 OfficeFileGuard. All rights reserved.
+============================================================
