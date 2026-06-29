@@ -1,65 +1,158 @@
-# CrocoOfficeFileGuard
+# OfficeFileGuard
 
-CrocoOfficeFileGuard is a small toolset that helps reduce accidental external disclosure of Office documents by marking files as "reserved" and requiring explicit user confirmation before sending such files to external recipients from Outlook.
+OfficeFileGuard is an open-source Windows toolset designed to reduce the risk of accidental disclosure of Microsoft Office documents.
 
-This repository contains:
-- `CrocoOfficeFileReserveToggle.Cli` — a CLI utility that toggles a custom Open XML document property named `reserved` on Office files (.docx, .xlsx, .pptx).
-- `CrocoShellHandler` — a SharpShell-based Windows Explorer context-menu extension that launches the CLI for the selected file(s).
-- `OutlookFileGuard_addin` — a VSTO Outlook add-in that intercepts outgoing email sends and prompts the user if reserved attachments are being sent to recipients outside the sender's SMTP domain.
-- Documentation and notes in `ARCHITECTURE.md`.
+Instead of relying solely on user awareness, OfficeFileGuard allows Office documents to be explicitly marked as **reserved**. Whenever a marked document is attached to an Outlook email addressed to recipients outside the sender's organization, the Outlook add-in requires explicit confirmation before the message is sent.
 
-Overview
-- Toggle from Explorer: Right-click a supported Office file and invoke the context-menu command `Toggle Reserved`. This action sets or removes a CustomDocumentProperty named `reserved` in the file package (Open XML).
-- Outlook guard: The VSTO add-in hooks `Application.ItemSend`. If the add-in detects that an outgoing email addressed to external recipients contains one or more files marked `reserved`, it prompts the sender to confirm the send. If the sender declines, the send is cancelled.
+The project is intended as an additional safety layer for organizations and individuals who regularly exchange confidential Office documents.
 
-How it works (technical)
-- CLI: Uses the Open XML SDK to open the package and add/remove a `CustomDocumentProperty` with Name=`reserved` and a boolean value. See `src/CrocoOfficeFileReserveToggle.Cli/Program.cs`.
-- Shell extension: Implemented as a SharpShell `SharpContextMenu` (see `src/CrocoShellHandler/CrocoOfficeCommand.cs`). The menu item launches the CLI executable with the selected file path as argument.
-- Outlook add-in: Implemented with VSTO. On `ItemSend`, the add-in:
-  - Resolves the sender SMTP address (handles Exchange/MAPI fallback).
-  - Scans recipients and treats any SMTP domain not matching the sender domain as external.
-  - Inspects attachments and (when implemented) checks each attachment for the `reserved` property.
-  - Prompts the user to explicitly confirm sending if reserved attachments are present and external recipients exist. See `src/OutlookFileGuard_addin/ThisAddIn.cs`.
+---
 
-Installation and setup (developer / tester)
-1. Open the solution in Visual Studio 2026.
-2. Build the solution: use __Build__ > __Build Solution__.
-3. CLI deployment:
-   - Place the CLI executable (`CrocoOfficeFileReserveToggle.Cli.exe`) in a stable location.
-   - Update the shell extension or installer to point to the CLI path (the current SharpShell code launches a hard-coded path; see `CrocoShellHandler`).
-4. Register the SharpShell extension:
-   - Follow SharpShell documentation for registering the COM server or use the SharpShell Server for development.
-   - Note: registering COM servers and making shell extensions available system-wide typically requires administrator privileges.
-5. Outlook add-in:
-   - Deploy or run the VSTO add-in from Visual Studio (or package it as required).
-   - Trust and enable the add-in in Outlook if prompted.
+## Features
 
-Usage
-- Toggle reserved state: In Windows Explorer, right-click a `.docx`, `.xlsx`, or `.pptx` file and select `Toggle Reserved`. The CLI will add the `reserved` custom property if missing, or remove it if already present.
-- Send email: In Outlook, attach files as usual. If one or more attachments are marked `reserved` and any recipient domain differs from the sender's domain, the add-in will prompt for confirmation before sending.
+* Mark Microsoft Office documents as **reserved**.
+* Windows Explorer context menu integration.
+* Outlook add-in that detects reserved Office documents attached to outgoing emails.
+* Automatic detection of external recipients.
+* Confirmation dialog before sending confidential documents outside the organization.
+* Open XML based implementation (no document format modifications).
 
-Current limitations and **TODO**
-- Attachment inspection is currently a placeholder in the add-in (`AreAttachementPrivate` in `ThisAddIn.cs`). Implement logic to:
-  - Create a temporary copy of each attachment (if required).
-  - Open the attachment as an Open XML package and check custom properties for `reserved`.
-- The shell extension currently launches the CLI by a hard-coded executable path. Replace with a configurable path or embed the toggle logic into the extension to avoid brittle deployment.
-- UX improvements:
-  - Show the current reserved state in the context menu (e.g., menu text or a checked state).
-  - Support multi-file toggling and progress/confirmation dialogs.
-  - Replace debug MessageBox calls in the add-in with non-blocking logging and production-ready dialogs.
-- SharpShell / Explorer notes:
-  - Windows imposes limits on which items can appear in the primary context menu; experiments and limitations are documented in `src/CrocoShellHandler/Read.me`.
+---
 
-Security and operational notes
-- This tool is a user-facing safety net and not a replacement for enterprise DLP or classification tools. Use it as an additional layer to reduce accidental leaks.
-- COM registration, shell integration, and VSTO deployment can require admin privileges and may be constrained by corporate policy and Outlook security settings.
-- Take care when temporarily storing attachments for inspection; remove temp copies securely after inspection.
+## Repository contents
 
-Development pointers
-- See `src/CrocoOfficeFileReserveToggle.Cli/Program.cs` for the Open XML implementation that creates and removes the `reserved` CustomDocumentProperty.
-- Implement `AreAttachementPrivate` in `src/OutlookFileGuard_addin/ThisAddIn.cs` to call the same Open XML inspection logic used by the CLI.
-- Replace MessageBox-based debug traces and finalize the confirmation UI (a typed-confirmation or stronger acknowledgement may be appropriate for higher assurance workflows).
-- Follow repository coding standards and contribution guidelines when submitting changes.
+The solution currently contains the following projects.
 
-License
-- **TODO** to add a license file (e.g., `LICENSE` with MIT or other license) to the repository root before publishing.
+### Production projects
+
+| Project                              | Description                                                                                         |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| CrocoOfficeFileGuard.Core        | Core library implementing Office document inspection and reserved property management.              |
+| CrocoIconOverlayShellExtension   | Windows Explorer shell extension providing context menu integration.                                |
+| CrocoOfficeFileReserveToggle.Cli | Command-line utility used to add or remove the `reserved` custom document property.                 |
+| OutlookFileGuard_addin           | Microsoft Outlook VSTO add-in that intercepts outgoing emails and checks attached Office documents. |
+
+### Test project
+
+| Project                             | Description                      |
+| ----------------------------------- | -------------------------------- |
+| CrocoOfficeFileGuard.Core.Tests | Unit tests for the core library. |
+
+---
+
+## How it works
+
+OfficeFileGuard stores a Boolean custom document property named **reserved** inside Microsoft Office Open XML documents (`.docx`, `.xlsx`, `.pptx`).
+
+The workflow is straightforward:
+
+1. The user marks a document as **reserved** using the Windows Explorer context menu.
+2. The custom property is stored directly inside the Office document.
+3. When Outlook sends an email, the add-in inspects Office attachments.
+4. If one or more reserved documents are attached and at least one recipient belongs to a different SMTP domain, OfficeFileGuard asks the user for explicit confirmation before the email is sent.
+
+No proprietary document format is used; the implementation relies entirely on the Open XML standard.
+
+---
+
+## Architecture
+
+The solution is divided into independent components.
+
+* **Core library** implements document inspection and metadata management.
+* **CLI utility** modifies Office document properties.
+* **Explorer shell extension** invokes the CLI from the Windows context menu.
+* **Outlook add-in** performs email inspection before sending.
+* **Unit tests** validate the core library.
+
+Additional implementation details are available in **ARCHITECTURE.md**.
+
+---
+
+## Building
+
+### Requirements
+
+* Visual Studio 2022 or later
+* .NET Framework Developer Pack required by the solution
+* Microsoft Office (for Outlook add-in development)
+* NuGet Package Restore enabled
+
+Clone the repository and build the solution normally:
+
+```text
+Build â†’ Build Solution
+```
+
+---
+
+## Usage
+
+### Mark a document
+
+Right-click a supported Office document:
+
+* `.docx`
+* `.xlsx`
+* `.pptx`
+
+and select the OfficeFileGuard context menu command.
+
+The command toggles the `reserved` document property.
+
+### Sending email
+
+Attach one or more Office documents in Outlook.
+
+If reserved documents are detected and one or more recipients belong to an external SMTP domain, OfficeFileGuard asks for confirmation before the email is sent.
+
+---
+
+## Supported file formats
+
+* Microsoft Word (.docx)
+* Microsoft Excel (.xlsx)
+* Microsoft PowerPoint (.pptx)
+
+Legacy binary Office formats are not supported.
+
+---
+
+## Project status
+
+OfficeFileGuard is actively maintained.
+
+The current version provides a complete end-to-end workflow including:
+
+* document marking;
+* Windows Explorer integration;
+* Outlook protection against accidental external disclosure;
+* automated tests for the core library.
+
+---
+
+## Contributing
+
+Contributions are welcome.
+
+Bug reports, feature requests and pull requests are appreciated.
+
+Please read **CONTRIBUTING.md** before submitting changes.
+
+---
+
+## Security
+
+OfficeFileGuard is intended to reduce accidental information disclosure.
+
+It is **not** a replacement for enterprise Data Loss Prevention (DLP), document classification or information protection systems.
+
+Security reporting instructions are available in **SECURITY.md**.
+
+---
+
+## License
+
+This project is released under the MIT License.
+
+See **LICENSE** for details.

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrocoIconOverlayShellExtens
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrocoOfficeFileGuard.Core", "CrocoOfficeFileGuard.Core\CrocoOfficeFileGuard.Core.csproj", "{68081D4C-33C2-454E-9F0B-B8E1EA561B04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrocoOfficeFileGuard.Core.Tests", "tests\CrocoOfficeFileGuard.Core.Tests\CrocoOfficeFileGuard.Core.Tests.csproj", "{F72663B3-B770-425F-A38D-6B5CAEB25FBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,14 @@ Global
 		{68081D4C-33C2-454E-9F0B-B8E1EA561B04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68081D4C-33C2-454E-9F0B-B8E1EA561B04}.Release|x64.ActiveCfg = Release|Any CPU
 		{68081D4C-33C2-454E-9F0B-B8E1EA561B04}.Release|x64.Build.0 = Release|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Debug|x64.Build.0 = Debug|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Release|x64.ActiveCfg = Release|Any CPU
+		{F72663B3-B770-425F-A38D-6B5CAEB25FBD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
