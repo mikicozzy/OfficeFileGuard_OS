@@ -26,7 +26,7 @@ jobs:
         run: nuget restore OfficeFileGuard_OS.sln
 
       - name: Build solution
-        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64
+        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:ManifestCertificateFile="src/OutlookFileGuard_addin/OutlookFileGuard_addin_TemporaryKey.pfx" /p:ManifestCertificatePassword="" /p:SignAssembly=true
 
       - name: Run tests
         run: dotnet test tests/OfficeFileGuard.Core.Tests/OfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
