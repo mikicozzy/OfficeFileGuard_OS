@@ -1,10 +1,10 @@
 # OfficeFileGuard
 
-OfficeFileGuard is an open-source Windows toolset designed to reduce the risk of accidental disclosure of Microsoft Office documents.
+OfficeFileGuard is an open-source, privacy-first Windows toolset designed to reduce the risk of accidental disclosure of Microsoft Office documents.
 
 Instead of relying solely on user awareness, OfficeFileGuard allows Office documents to be explicitly marked as **reserved**. Whenever a marked document is attached to an Outlook email addressed to recipients outside the sender's organization, the Outlook add-in requires explicit confirmation before the message is sent.
 
-The project is intended as an additional safety layer for organizations and individuals who regularly exchange confidential Office documents.
+The project is intended as an additional safety layer for organizations and individuals who regularly exchange confidential Microsoft Office documents.
 
 ---
 
@@ -15,32 +15,48 @@ The project is intended as an additional safety layer for organizations and indi
 * Outlook add-in that detects reserved Office documents attached to outgoing emails.
 * Automatic detection of external recipients.
 * Confirmation dialog before sending confidential documents outside the organization.
-* Open XML based implementation (no document format modifications).
+* Uses Microsoft Office Open XML custom document properties.
+* No proprietary document format.
+* Fully open source.
 
 ---
 
-## Repository contents
+## Privacy First
 
-The solution currently contains the following projects.
+OfficeFileGuard is designed with a **privacy-first** approach.
+
+* **All document inspection is performed locally on the user's computer.**
+* **No documents, attachments, metadata, or email information are uploaded to external servers.**
+* **No cloud services are used.**
+* **No telemetry or user tracking is performed.**
+* **No personal or organizational data is collected.**
+
+OfficeFileGuard operates entirely offline. The application only reads the metadata required to determine whether an Office document has been marked as **reserved**, and all processing remains on the local machine.
+
+---
+
+## Repository Contents
+
+The solution contains the following projects.
 
 ### Production projects
 
-| Project                              | Description                                                                                         |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| CrocoOfficeFileGuard.Core        | Core library implementing Office document inspection and reserved property management.              |
-| CrocoIconOverlayShellExtension   | Windows Explorer shell extension providing context menu integration.                                |
-| CrocoOfficeFileReserveToggle.Cli | Command-line utility used to add or remove the `reserved` custom document property.                 |
-| OutlookFileGuard_addin           | Microsoft Outlook VSTO add-in that intercepts outgoing emails and checks attached Office documents. |
+| Project                              | Description                                                                                              |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| **CrocoOfficeFileGuard.Core**        | Core library implementing Office document inspection and management of the `reserved` document property. |
+| **CrocoIconOverlayShellExtension**   | Windows Explorer shell extension providing context menu integration.                                     |
+| **CrocoOfficeFileReserveToggle.Cli** | Command-line utility used to add or remove the `reserved` custom document property.                      |
+| **OutlookFileGuard_addin**           | Microsoft Outlook VSTO add-in that inspects outgoing emails before sending.                              |
 
 ### Test project
 
 | Project                             | Description                      |
 | ----------------------------------- | -------------------------------- |
-| CrocoOfficeFileGuard.Core.Tests | Unit tests for the core library. |
+| **CrocoOfficeFileGuard.Core.Tests** | Unit tests for the core library. |
 
 ---
 
-## How it works
+## How It Works
 
 OfficeFileGuard stores a Boolean custom document property named **reserved** inside Microsoft Office Open XML documents (`.docx`, `.xlsx`, `.pptx`).
 
@@ -51,7 +67,7 @@ The workflow is straightforward:
 3. When Outlook sends an email, the add-in inspects Office attachments.
 4. If one or more reserved documents are attached and at least one recipient belongs to a different SMTP domain, OfficeFileGuard asks the user for explicit confirmation before the email is sent.
 
-No proprietary document format is used; the implementation relies entirely on the Open XML standard.
+The Office document itself remains fully compatible with Microsoft Office because the implementation relies entirely on the Open XML standard.
 
 ---
 
@@ -59,11 +75,11 @@ No proprietary document format is used; the implementation relies entirely on th
 
 The solution is divided into independent components.
 
-* **Core library** implements document inspection and metadata management.
-* **CLI utility** modifies Office document properties.
-* **Explorer shell extension** invokes the CLI from the Windows context menu.
-* **Outlook add-in** performs email inspection before sending.
-* **Unit tests** validate the core library.
+* **CrocoOfficeFileGuard.Core** implements Office document inspection and metadata management.
+* **CrocoOfficeFileReserveToggle.Cli** modifies Office document properties.
+* **CrocoIconOverlayShellExtension** invokes the CLI from the Windows Explorer context menu.
+* **OutlookFileGuard_addin** performs email inspection before sending.
+* **CrocoOfficeFileGuard.Core.Tests** validates the core library.
 
 Additional implementation details are available in **ARCHITECTURE.md**.
 
@@ -78,7 +94,7 @@ Additional implementation details are available in **ARCHITECTURE.md**.
 * Microsoft Office (for Outlook add-in development)
 * NuGet Package Restore enabled
 
-Clone the repository and build the solution normally:
+Open the solution in Visual Studio and build it normally:
 
 ```text
 Build → Build Solution
@@ -90,17 +106,17 @@ Build → Build Solution
 
 ### Mark a document
 
-Right-click a supported Office document:
+Right-click a supported Microsoft Office document:
 
 * `.docx`
 * `.xlsx`
 * `.pptx`
 
-and select the OfficeFileGuard context menu command.
+and select the **OfficeFileGuard** context menu command.
 
 The command toggles the `reserved` document property.
 
-### Sending email
+### Send an email
 
 Attach one or more Office documents in Outlook.
 
@@ -108,26 +124,29 @@ If reserved documents are detected and one or more recipients belong to an exter
 
 ---
 
-## Supported file formats
+## Supported File Formats
 
 * Microsoft Word (.docx)
 * Microsoft Excel (.xlsx)
 * Microsoft PowerPoint (.pptx)
 
-Legacy binary Office formats are not supported.
+Legacy binary Office formats (`.doc`, `.xls`, `.ppt`) are not supported.
 
 ---
 
-## Project status
+## Project Status
 
 OfficeFileGuard is actively maintained.
 
 The current version provides a complete end-to-end workflow including:
 
-* document marking;
-* Windows Explorer integration;
-* Outlook protection against accidental external disclosure;
-* automated tests for the core library.
+* Office document marking
+* Windows Explorer integration
+* Outlook protection against accidental external disclosure
+* Automated unit tests
+* Local-only document inspection
+* No telemetry
+* No cloud connectivity
 
 ---
 
@@ -145,7 +164,7 @@ Please read **CONTRIBUTING.md** before submitting changes.
 
 OfficeFileGuard is intended to reduce accidental information disclosure.
 
-It is **not** a replacement for enterprise Data Loss Prevention (DLP), document classification or information protection systems.
+It is **not** a replacement for enterprise Data Loss Prevention (DLP), Information Protection, or document classification systems.
 
 Security reporting instructions are available in **SECURITY.md**.
 
@@ -153,6 +172,6 @@ Security reporting instructions are available in **SECURITY.md**.
 
 ## License
 
-This project is released under the MIT License.
+OfficeFileGuard is licensed under the **Apache License 2.0**.
 
-See **LICENSE** for details.
+See the **LICENSE** file for details.

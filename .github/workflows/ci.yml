@@ -1,0 +1,45 @@
+name: CI - Build, Test and Package
+
+on:     # trigger
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest   #VM windows-latest to use
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore CrocoOfficeFileGuard.sln
+
+      - name: Build solution
+        run: msbuild CrocoOfficeFileGuard.sln /p:Configuration=Release /p:Platform=x64
+
+      - name: Run tests
+        run: dotnet test tests/CrocoOfficeFileGuard.Core.Tests/CrocoOfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
+
+      - name: Install Inno Setup
+        run: choco install innosetup --yes
+
+      - name: Build installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\setup.iss
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OfficeFileGuard-Setup
+          path: installer\output\*.exe
