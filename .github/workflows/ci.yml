@@ -12,24 +12,24 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '9.0.x'
 
       - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
 
       - name: Restore NuGet packages
-        run: nuget restore CrocoOfficeFileGuard.sln
+        run: nuget restore OfficeFileGuard_OS.sln
 
       - name: Build solution
-        run: msbuild CrocoOfficeFileGuard.sln /p:Configuration=Release /p:Platform=x64
+        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64
 
       - name: Run tests
-        run: dotnet test tests/CrocoOfficeFileGuard.Core.Tests/CrocoOfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
+        run: dotnet test tests/OfficeFileGuard.Core.Tests/OfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
 
       - name: Install Inno Setup
         run: choco install innosetup --yes
