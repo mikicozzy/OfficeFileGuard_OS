@@ -33,9 +33,9 @@ jobs:
       - name: Install VSTO Build Tools
         run: choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.OfficeBuildTools --includeRecommended" --yes
 
-      # TODO: Per ora senza signature (pare che Github actions non accetti quella autogenerata vsto): Poi firmare con certificato ufficiale 
+      # TODO: Poi firmare con certificato ufficiale 
       - name: Build solution
-        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=false /p:SignAssembly=false /p:VSTO_EULA_URL="" /p:VSTO_DISABLE_VERIFICATION=true
+        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:SignAssembly=true
         # run: |
         #   msbuild CrocoOfficeFileGuard.Core\CrocoOfficeFileGuard.Core.csproj /p:Configuration=Release
         #   msbuild CrocoIconOverlayShellExtension\CrocoIconOverlayShellExtension.csproj /p:Configuration=Release /p:Platform=x64
