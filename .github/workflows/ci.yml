@@ -35,8 +35,8 @@ jobs:
           msbuild src\CrocoOfficeFileReserveToggle.Cli\CrocoOfficeFileReserveToggle.Cli.csproj /p:Configuration=Release /p:Platform=x64
 
       - name: Run tests
-        run: dotnet test tests/OfficeFileGuard.Core.Tests/OfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
-
+        run: dotnet test tests/CrocoOfficeFileGuard.Core.Tests/CrocoOfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
+        
       - name: Install Inno Setup
         run: choco install innosetup --yes
 
