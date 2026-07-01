@@ -25,8 +25,13 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore OfficeFileGuard_OS.sln
 
+      # TODO: Sostituire con certificato ufficiale
       - name: Build solution
-        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:ManifestCertificateFile="src/OutlookFileGuard_addin/OutlookFileGuard_addin_TemporaryKey.pfx" /p:ManifestCertificatePassword="" /p:SignAssembly=true
+        run: #msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:ManifestCertificateFile="src/OutlookFileGuard_addin/OutlookFileGuard_addin_TemporaryKey.pfx" /p:ManifestCertificatePassword="" /p:SignAssembly=true
+        # esclusione Outlook VSTO addin
+          msbuild CrocoOfficeFileGuard.Core\CrocoOfficeFileGuard.Core.csproj /p:Configuration=Release
+          msbuild CrocoIconOverlayShellExtension\CrocoIconOverlayShellExtension.csproj /p:Configuration=Release /p:Platform=x64
+          msbuild src\CrocoOfficeFileReserveToggle.Cli\CrocoOfficeFileReserveToggle.Cli.csproj /p:Configuration=Release /p:Platform=x64
 
       - name: Run tests
         run: dotnet test tests/OfficeFileGuard.Core.Tests/OfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
