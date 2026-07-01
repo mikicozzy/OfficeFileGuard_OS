@@ -70,7 +70,5 @@ All processing is performed locally using standard Microsoft Office and Windows 
 ## Responsible Disclosure
 
 Please allow reasonable time for security issues to be investigated and corrected before publicly disclosing vulnerabilities.
-
 Responsible disclosure helps protect all users while fixes are being prepared and released.
-
 Thank you for helping improve the security of OfficeFileGuard.

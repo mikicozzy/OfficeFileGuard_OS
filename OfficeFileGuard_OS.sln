@@ -10,11 +10,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{71A8678C-A8AD-4E41-B54A-FA1CD42D3421}"
 	ProjectSection(SolutionItems) = preProject
 		ARCHITECTURE.md = ARCHITECTURE.md
-		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CHANGELOG.md = CHANGELOG.md
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Installation.md = Installation.md
 		LICENSE = LICENSE
-		note_icon_overlay_project.md = note_icon_overlay_project.md
 		NOTICE = NOTICE
 		README.md = README.md
 		SECURITY.md = SECURITY.md

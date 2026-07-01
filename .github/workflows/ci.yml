@@ -36,11 +36,7 @@ jobs:
       # TODO: Poi firmare con certificato ufficiale 
       - name: Build solution
         run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:SignAssembly=true
-        # run: |
-        #   msbuild CrocoOfficeFileGuard.Core\CrocoOfficeFileGuard.Core.csproj /p:Configuration=Release
-        #   msbuild CrocoIconOverlayShellExtension\CrocoIconOverlayShellExtension.csproj /p:Configuration=Release /p:Platform=x64
-        #   msbuild src\CrocoOfficeFileReserveToggle.Cli\CrocoOfficeFileReserveToggle.Cli.csproj /p:Configuration=Release /p:Platform=x64
-
+      
       - name: Run tests
         run: dotnet test tests/CrocoOfficeFileGuard.Core.Tests/CrocoOfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
 
