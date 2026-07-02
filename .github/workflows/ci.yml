@@ -1,6 +1,6 @@
 name: CI - Build, Test and Package
 
-on:     # trigger
+on:
   push:
     branches: [ main ]
   pull_request:
@@ -8,7 +8,7 @@ on:     # trigger
 
 jobs:
   build-and-test:
-    runs-on: windows-latest   #VM windows-latest to use
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -19,25 +19,21 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v3
+      - name: Install Visual Studio Workload Office
+        run: |
+          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify `
+            --productId Microsoft.VisualStudio.Product.Enterprise `
+            --add Microsoft.VisualStudio.Workload.OfficeBuildTools `
+            --add Microsoft.VisualStudio.Workload.ManagedDesktop `
+            --includeRecommended `
+            --includeOptional `
+            --quiet `
+            --norestart
 
       - name: Restore NuGet packages
         run: nuget restore OfficeFileGuard_OS.sln
 
-      - name: Install VSTO Hosting Tools
-        run: |
-          dotnet add src/OutlookFileGuard_addin/OutlookFileGuard_addin.csproj package Microsoft.VisualStudio.Tools.Applications
-          dotnet restore src/OutlookFileGuard_addin/OutlookFileGuard_addin.csproj
-
-      # - name: Install VSTO Build Tools
-      #   run: choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.OfficeBuildTools --includeRecommended" --yes
-
-      # TODO: Poi firmare con certificato ufficiale 
-      # - name: Build solution
-      #   run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:SignAssembly=true
-      
-      - name: Build solution
+      - name: Build solution (VS2026 MSBuild)
         run: |
           & "C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin\MSBuild.exe" OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:ManifestCertificateFile="src/OutlookFileGuard_addin/OutlookFileGuard_addin_TemporaryKey.pfx" /p:ManifestCertificatePassword="" /p:SignAssembly=true
 
