@@ -30,13 +30,17 @@ jobs:
           dotnet add src/OutlookFileGuard_addin/OutlookFileGuard_addin.csproj package Microsoft.VisualStudio.Tools.Applications
           dotnet restore src/OutlookFileGuard_addin/OutlookFileGuard_addin.csproj
 
-      - name: Install VSTO Build Tools
-        run: choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.OfficeBuildTools --includeRecommended" --yes
+      # - name: Install VSTO Build Tools
+      #   run: choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.OfficeBuildTools --includeRecommended" --yes
 
       # TODO: Poi firmare con certificato ufficiale 
-      - name: Build solution
-        run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:SignAssembly=true
+      # - name: Build solution
+      #   run: msbuild OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:SignAssembly=true
       
+      - name: Build solution
+        run: |
+          & "C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\Bin\MSBuild.exe" OfficeFileGuard_OS.sln /p:Configuration=Release /p:Platform=x64 /p:SignManifests=true /p:ManifestCertificateFile="src/OutlookFileGuard_addin/OutlookFileGuard_addin_TemporaryKey.pfx" /p:ManifestCertificatePassword="" /p:SignAssembly=true
+
       - name: Run tests
         run: dotnet test tests/CrocoOfficeFileGuard.Core.Tests/CrocoOfficeFileGuard.Core.Tests.csproj --configuration Release --verbosity normal
 
